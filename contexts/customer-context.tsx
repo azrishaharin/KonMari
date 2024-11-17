@@ -1,21 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import { SUBSCRIPTION_PLANS } from '@/lib/constants';
+import type { Database } from '@/types/database';
 
-export interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  subscription_type: keyof typeof SUBSCRIPTION_PLANS;
-  payment_status: 'paid' | 'pending' | 'overdue';
-}
+type Customer = Database['public']['Tables']['customers']['Row'];
 
 interface CustomerContextType {
   customers: Customer[];
-  addCustomer: (customer: Omit<Customer, 'id' | 'payment_status'>) => void;
+  addCustomer: (customer: Omit<Customer, 'id' | 'created_at' | 'updated_at'>) => void;
   updateCustomer: (customer: Customer) => void;
   deleteCustomer: (id: string) => void;
 }
@@ -23,35 +15,22 @@ interface CustomerContextType {
 const CustomerContext = createContext<CustomerContextType | undefined>(undefined);
 
 export function CustomerProvider({ children }: { children: React.ReactNode }) {
-  const [customers, setCustomers] = useState<Customer[]>([
-    {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+60123456789',
-      address: 'Block A-1-1, Taman Sri Rampai, 53300 Kuala Lumpur',
-      subscription_type: 'MONTHLY',
-      payment_status: 'paid',
-    },
-  ]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
 
-  const addCustomer = (newCustomer: Omit<Customer, 'id' | 'payment_status'>) => {
-    console.log('Adding new customer:', newCustomer);
-    const customer: Customer = {
-      ...newCustomer,
+  const addCustomer = (customer: Omit<Customer, 'id' | 'created_at' | 'updated_at'>) => {
+    const newCustomer: Customer = {
+      ...customer,
       id: Date.now().toString(),
-      payment_status: 'pending',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
-    setCustomers(prev => [...prev, customer]);
-    console.log('Updated customers:', customers);
+    setCustomers(prev => [...prev, newCustomer]);
   };
 
   const updateCustomer = (updatedCustomer: Customer) => {
-    setCustomers(prev => 
-      prev.map(customer => 
-        customer.id === updatedCustomer.id ? updatedCustomer : customer
-      )
-    );
+    setCustomers(prev => prev.map(customer => 
+      customer.id === updatedCustomer.id ? updatedCustomer : customer
+    ));
   };
 
   const deleteCustomer = (id: string) => {
@@ -59,7 +38,14 @@ export function CustomerProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <CustomerContext.Provider value={{ customers, addCustomer, updateCustomer, deleteCustomer }}>
+    <CustomerContext.Provider 
+      value={{ 
+        customers, 
+        addCustomer, 
+        updateCustomer, 
+        deleteCustomer 
+      }}
+    >
       {children}
     </CustomerContext.Provider>
   );
