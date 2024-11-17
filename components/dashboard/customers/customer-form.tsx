@@ -1,0 +1,1 @@
+// Move the form from app/(dashboard)/dashboard/customers/new/page.tsx 

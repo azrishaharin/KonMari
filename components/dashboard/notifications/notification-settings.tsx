@@ -1,0 +1,1 @@
+// Move the settings form from app/(dashboard)/dashboard/notifications/page.tsx 

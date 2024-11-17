@@ -1,0 +1,1 @@
+// Move the chart components from app/(dashboard)/dashboard/analytics/page.tsx 
