@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useApp } from '@/contexts/app-context';
-import { SUBSCRIPTION_PLANS } from '@/lib/mock-data';
+import { SUBSCRIPTION_PLANS, useApp } from '@/contexts/app-context';
 import { Pencil, Trash2 } from 'lucide-react';
 import { EditCustomerModal } from './edit-customer-modal';
 import { toast } from 'react-toastify';

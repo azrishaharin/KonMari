@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/contexts/app-context';
-import { SUBSCRIPTION_PLANS } from '@/lib/mock-data';
+import { SUBSCRIPTION_PLANS } from '@/lib/subscription-plans';
 import { toast } from 'react-toastify';
 import { Mail, Phone, MessageSquare, CheckCircle } from 'lucide-react';
 
@@ -73,10 +73,8 @@ export default function SubscriptionsPage() {
 
   const handleMarkAsPaid = async (customerId: string) => {
     try {
-      const updatedCustomer = await updateCustomer(customerId, { payment_status: 'paid' });
-      if (updatedCustomer) {
-        toast.success('Payment status updated');
-      }
+      await updateCustomer(customerId, { payment_status: 'paid' });
+      toast.success('Payment status updated');
     } catch {
       toast.error('Failed to update payment status');
     }

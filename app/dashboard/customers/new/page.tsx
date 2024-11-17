@@ -3,10 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/contexts/app-context';
-import { SUBSCRIPTION_PLANS } from '@/lib/mock-data';
+import { SUBSCRIPTION_PLANS, SubscriptionPlan } from '@/lib/subscription-plans';
 import { toast } from 'react-toastify';
-
-type SubscriptionType = 'MONTHLY' | 'QUARTERLY' | 'YEARLY';
 
 export default function NewCustomerPage() {
   const router = useRouter();
@@ -17,7 +15,7 @@ export default function NewCustomerPage() {
     email: '',
     phone: '',
     address: '',
-    subscription_type: 'MONTHLY' as SubscriptionType,
+    subscription_type: 'MONTHLY' as SubscriptionPlan,
     payment_status: 'pending' as const
   });
 
@@ -116,7 +114,7 @@ export default function NewCustomerPage() {
             required
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             value={formData.subscription_type}
-            onChange={(e) => setFormData({ ...formData, subscription_type: e.target.value as SubscriptionType })}
+            onChange={(e) => setFormData({ ...formData, subscription_type: e.target.value as SubscriptionPlan })}
           >
             {Object.entries(SUBSCRIPTION_PLANS).map(([key, plan]) => (
               <option key={key} value={key}>
