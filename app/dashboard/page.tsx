@@ -15,10 +15,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  Scale,
-  CoreScaleOptions,
 } from 'chart.js';
 import { Line, Bar, Pie } from 'react-chartjs-2';
+import type { ChartOptions } from 'chart.js';
 
 ChartJS.register(
   CategoryScale,
@@ -92,14 +91,14 @@ export default function DashboardPage() {
     }
   };
 
-  const chartOptions = {
+  const chartOptions: ChartOptions<'bar'> = {
     responsive: true,
     scales: {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: function(this: Scale<CoreScaleOptions>, value: number) {
-            return `${value}%`;
+          callback: function(tickValue: number | string): string {
+            return `RM ${tickValue}`;
           }
         }
       }
